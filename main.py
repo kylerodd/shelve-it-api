@@ -8,10 +8,26 @@ from db import lifespan, SessionDep
 from models.container import Container
 from routers import container as containerRouter;
 
+from fastapi.middleware.cors import CORSMiddleware
+
+
 app = FastAPI(lifespan=lifespan)
 
 # Routers
 app.include_router(containerRouter.router)
+
+
+
+origins = [
+    "http://localhost:8080",
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Test
 @app.post("/prepop/")
